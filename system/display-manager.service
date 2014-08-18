@@ -1,0 +1,10 @@
+[Unit]
+Description=Display manager setup service
+Requires=display-manager-run.service
+After=display-manager-run.service
+
+[Service]
+Type=oneshot
+
+[Install]
+WantedBy=graphical.target
