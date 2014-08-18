@@ -1,0 +1,15 @@
+[Unit]
+Description=Weston display daemon
+
+[Service]
+User=display
+ExecStart=/usr/bin/startx
+StandardInput=tty
+TTYPath=/dev/tty7
+
+#adding the capability to configure ttys
+#may be needed if the user 'display' doesn't own the tty
+#CapabilityBoundingSet=CAP_SYS_TTY_CONFIG 
+
+[Install]
+WantedBy=graphical.target
