@@ -32,9 +32,14 @@ mkdir -p %{buildroot}/usr/lib/systemd/system
 mv  %{buildroot}/display-manager.path %{buildroot}/usr/lib/systemd/system/
 mv  %{buildroot}/display-manager.service %{buildroot}/usr/lib/systemd/system/
 mv  %{buildroot}/display-manager-run.service %{buildroot}/usr/lib/systemd/system/
+mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
+ln -sf ../display-manager.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/display-manager.service
+ln -sf ../display-manager-run.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/display-manager-run.service
 
 %files
 %defattr(-,root,root,-)
 /usr/lib/systemd/system/display-manager.path
 /usr/lib/systemd/system/display-manager.service
 /usr/lib/systemd/system/display-manager-run.service
+/usr/lib/systemd/system/multi-user.target.wants/display-manager.service
+/usr/lib/systemd/system/multi-user.target.wants/display-manager-run.service
