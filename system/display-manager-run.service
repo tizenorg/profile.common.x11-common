@@ -2,10 +2,13 @@
 Description=Xorg display daemon
 
 [Service]
-User=display
-ExecStart=/usr/bin/startx
-StandardInput=tty
-TTYPath=/dev/tty7
+#User=display
+Restart=always
+RestartSec=10
+Type=forking
+ExecStart=/usr/bin/Xorg -logfile /var/log/Xorg.0.log
+#StandardInput=tty
+#TTYPath=/dev/tty7
 
 #adding the capability to configure ttys
 #may be needed if the user 'display' doesn't own the tty
