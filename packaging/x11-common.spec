@@ -28,18 +28,30 @@ make %{?jobs:-j%jobs}
 rm -rf %{buildroot}
 %make_install
 
-mkdir -p %{buildroot}/usr/lib/systemd/system
-mv  %{buildroot}/display-manager.path %{buildroot}/usr/lib/systemd/system/
-mv  %{buildroot}/display-manager.service %{buildroot}/usr/lib/systemd/system/
-mv  %{buildroot}/display-manager-run.service %{buildroot}/usr/lib/systemd/system/
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -sf ../display-manager.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/display-manager.service
-ln -sf ../display-manager-run.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/display-manager-run.service
+mkdir -p %{buildroot}%{_unitdir}
+mv  %{buildroot}/display-manager.path %{buildroot}%{_unitdir}
+mv  %{buildroot}/display-manager.service %{buildroot}%{_unitdir}
+mv  %{buildroot}/display-manager-run.service %{buildroot}%{_unitdir}
+mkdir -p %{buildroot}%{_unitdir}/multi-user.target.wants
+ln -sf ../display-manager.service %{buildroot}%{_unitdir}/multi-user.target.wants/display-manager.service
+ln -sf ../display-manager-run.service %{buildroot}%{_unitdir}/multi-user.target.wants/display-manager-run.service
+
+# rules for /dev/input devices
+mkdir -p %{buildroot}%{_sysconfdir}/udev/rules.d/
+cat >%{buildroot}%{_sysconfdir}/udev/rules.d/99-input.rules <<'EOF'
+SUBSYSTEM=="input", MODE="0660", GROUP="input", SECLABEL{smack}="^"
+EOF
+
+%pre
+# create group 'input' if needed
+getent group input >/dev/null || %{_sbindir}/groupadd -r -o input
 
 %files
 %defattr(-,root,root,-)
-/usr/lib/systemd/system/display-manager.path
-/usr/lib/systemd/system/display-manager.service
-/usr/lib/systemd/system/display-manager-run.service
-/usr/lib/systemd/system/multi-user.target.wants/display-manager.service
-/usr/lib/systemd/system/multi-user.target.wants/display-manager-run.service
+%{_unitdir}/display-manager.path
+%{_unitdir}/display-manager.service
+%{_unitdir}/display-manager-run.service
+%{_unitdir}/multi-user.target.wants/display-manager.service
+%{_unitdir}/multi-user.target.wants/display-manager-run.service
+%config %{_sysconfdir}/udev/rules.d/*
+
