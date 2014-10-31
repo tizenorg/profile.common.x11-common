@@ -6,7 +6,7 @@ Description=Xorg display daemon
 Restart=always
 RestartSec=10
 Type=forking
-ExecStart=/usr/bin/Xorg -logfile /var/log/Xorg.0.log
+ExecStart=/usr/bin/Xorg -logfile /var/log/Xorg.0.log -noreset -configdir /etc/X11/xorg.conf.d
 #StandardInput=tty
 #TTYPath=/dev/tty7
 
