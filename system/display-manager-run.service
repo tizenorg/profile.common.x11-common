@@ -1,17 +1,16 @@
 [Unit]
 Description=Xorg display daemon
+Requires=dbus.service
+After=dbus.service
 
 [Service]
-#User=display
+Type=notify
 Restart=always
 RestartSec=10
-ExecStart=/usr/bin/Xorg -logfile /var/log/Xorg.0.log -noreset -configdir /etc/X11/xorg.conf.d
-#StandardInput=tty
-#TTYPath=/dev/tty7
-
-#adding the capability to configure ttys
-#may be needed if the user 'display' doesn't own the tty
-#CapabilityBoundingSet=CAP_SYS_TTY_CONFIG 
+EnvironmentFile=-/etc/sysconfig/xorg
+ExecStart=/usr/bin/xorg-launch-helper $OPTIONS
+StandardInput=tty
+TTYPath=/dev/tty7
 
 [Install]
 WantedBy=graphical.target

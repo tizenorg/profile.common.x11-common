@@ -8,6 +8,7 @@ License:    MIT
 Source:    %{name}-%{version}.tar.gz
 
 Requires:   xorg-server
+Requires:   xorg-launch-helper
 Conflicts:  weston-common
 
 %description
