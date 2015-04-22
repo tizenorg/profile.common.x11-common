@@ -1,3 +1,5 @@
+%bcond_with x
+
 Name:	    x11-common
 Summary:    Configuration-files needed by xserver for autorun
 Version:    0.0.1
@@ -10,6 +12,10 @@ Source:    %{name}-%{version}.tar.gz
 Requires:   xorg-server
 Requires:   xorg-launch-helper
 Conflicts:  weston-common
+
+%if !%{with x}
+ExclusiveArch:
+%endif
 
 %description
 Description: %{summary}
