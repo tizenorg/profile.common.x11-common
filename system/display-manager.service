@@ -5,6 +5,7 @@ After=enlightenment.service
 
 [Service]
 Type=oneshot
+ExecStart=/usr/bin/touch /tmp/.X.done
 
 [Install]
 WantedBy=graphical.target
